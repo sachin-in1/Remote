@@ -18,6 +18,48 @@ a {
 }
 
 .jumbotron{
+	align-items: center;
 
 	background-color: white;
+}
+
+#custom-seekbar
+{  
+  cursor: pointer;
+  height: 10px;
+  margin-bottom: 10px;
+  outline: thin solid orange;
+  overflow: hidden;
+  position: relative;
+  width: 400px;
+}
+#custom-seekbar span
+{
+  background-color: green;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 10px;
+  width: 0px;
+}
+
+#indiv
+{  
+  cursor: pointer;
+  align-items: center;
+  height: 10px;
+  overflow: hidden;
+  position: relative;
+  width: 400px;
+}
+#indiv span
+{
+  background-color: black;
+  opacity: 0.5;
+  /* position: relative; */
+  padding-top: 3;
+  left: 0;
+  /* padding-bottom: 3; */
+  height: 5px;
+  width: 0px;
 }
