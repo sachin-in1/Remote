@@ -41,18 +41,23 @@ io.on('connection', function(socket) {
   count= socket.client.conn.server.clientsCount;
   console.log(socket.client.conn.server.clientsCount+ '  users connected');
   i=count!=1?i:0;
-
 console.log('count is '+count);
-  console.log(i);
+  console.log("index is ",i);
   io.emit('i',i);
   socket.on('chat message', function(msg){
       console.log('message: ' + msg);
       // socket.broadcast.emit('chat message: '+msg);
     });
-
+    socket.on('stop', function(msg){
+      console.log('index: ' + msg);
+      i=msg;
+        });//stop recieve
   socket.on('play', function(msg){
-    console.log('message: ' + msg);
+    console.log('time: ' + msg+"  "+i);
       });//play recieve
+  socket.on('seek', function(msg){
+    console.log('time: ' + msg+"  "+i);
+      });//seek
   socket.on('next', function(msg){
     console.log('next: ' + msg);
       });//next recieve
@@ -77,9 +82,15 @@ io.on('connection', (socket) => {
   socket.on('i', (msg) => {
     io.emit('i',msg);
   });//i sync
+  socket.on('seek', (msg) => {
+    io.emit('seek',msg);
+  });//seek
   socket.on('pause', (msg) => {
     io.emit('pause',msg);
   });//pause
+  socket.on('stop', (msg) => {
+    io.emit('stop',msg);
+  });//next
 });
 
 /**
