@@ -31,8 +31,20 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+
+
+var count;
+var i=count==null?0:null;
+console.log('count is '+count);
+
 io.on('connection', function(socket) {
-  console.log('a user connected');
+  count= socket.client.conn.server.clientsCount;
+  console.log(socket.client.conn.server.clientsCount+ '  users connected');
+  i=count!=1?i:0;
+
+console.log('count is '+count);
+  console.log(i);
+  io.emit('i',i);
   socket.on('chat message', function(msg){
       console.log('message: ' + msg);
       // socket.broadcast.emit('chat message: '+msg);
@@ -40,25 +52,34 @@ io.on('connection', function(socket) {
 
   socket.on('play', function(msg){
     console.log('message: ' + msg);
-     // socket.broadcast.emit('chat message: '+msg);
-      });
+      });//play recieve
+  socket.on('next', function(msg){
+    console.log('next: ' + msg);
+      });//next recieve
+  socket.on('i', function(msg){
+    i=msg;
+    console.log('i: ' + msg);
+      });//i recieve
 
-
-  // socket.on('pause', function(msg){
-  //   console.log('message: ' + msg);
-  //    // socket.broadcast.emit('chat message: '+msg);
-  //     });
 });
+
 io.on('connection', (socket) => {
+
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
-  });
+  });//chat
   socket.on('play', (msg) => {
     io.emit('play',msg);
-  });
+  });//play
+  socket.on('next', (msg) => {
+    io.emit('next',msg);
+  });//next
+  socket.on('i', (msg) => {
+    io.emit('i',msg);
+  });//i sync
   socket.on('pause', (msg) => {
     io.emit('pause',msg);
-  });
+  });//pause
 });
 
 /**

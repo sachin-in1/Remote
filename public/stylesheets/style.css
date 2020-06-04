@@ -63,3 +63,30 @@ a {
   height: 5px;
   width: 0px;
 }
+
+
+#video {
+  position: relative;
+  display: inline-block;
+  
+  /* ie7 inline-block support */
+  *display: inline;
+  *zoom: 1;
+
+  visibility: hidden;
+  z-index: 0;
+}
+
+#over {
+  /* position: absolute; */
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right:0px;
+  z-index: 10;
+  background-image: url(http://img.youtube.com/vi/E_cTdhd88mk/0.jpg);
+  /* background-repeat: no-repeat; */
+  /* background-size: cover ; */
+  background-color: #11070700;
+}
+
