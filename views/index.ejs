@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app lang="en">
 <head>
     <% include ./partials/head %>
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+</script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
@@ -36,6 +40,15 @@
               <textarea id="duration"></textarea> -->
             </div>
           </div>
+        <input id="names" ng-model="name"> Hello {{ name }}
+        <br/>
+        <br/>
+        <form action="">
+            <input id="m" autocomplete="off" /><button>Send</button>
+        </form>
+    <br/>
+
+    <ul id="messages"></ul>
 
         
 
@@ -47,7 +60,34 @@
 </footer -->
 
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
 <script>
+
+$(function () {
+    var socket = io();
+    $('form').submit(function(e){
+      e.preventDefault(); // prevents page reloading
+      socket.emit('chat message', $('#names').val()+ "   :  " +$('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
+    });
+    socket.on('play', function(msg){
+      player.playVideo();
+      player.seekTo(msg);
+      player.playVideo();
+      
+    });
+    socket.on('pause', function(msg){
+
+        player.pauseVideo();
+      player.seekTo(msg);
+      
+    });
+  });
+
     
 function log(){
     console.log("hi");
@@ -59,7 +99,10 @@ function log(){
 
 
     function play(){
-        player.playVideo();
+        // e.preventDefault(); // prevents page reloading
+      socket.emit('play', player.getCurrentTime());
+      player.playVideo();
+      console.log(player.getCurrentTime());
         if (event.data == YT.PlayerState.PLAYING && !done) {
         setTimeout(stopVideo, 6000);
         done = true;
@@ -68,6 +111,7 @@ function log(){
     }
 
     function pause(){
+        socket.emit('pause', player.getCurrentTime());
         player.pauseVideo(); 
         if (event.data == YT.PlayerState.PLAYING && !done) {
         setTimeout(stopVideo, 6000);
