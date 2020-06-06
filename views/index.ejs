@@ -41,19 +41,21 @@
             </div>
             <div class="col-sm-1 glyphicon glyphicon-step-forward" onclick=next() >
             </div>
-              <div class="col-sm-8 " id="custom-seekbar">
+              <div class="col-sm-7 " id="custom-seekbar">
                 <span><div id="indiv"><span></span></div></span>
               </div>
+              <div class="col-sm-1" id="current-time"></div>
+              <!-- <div class="row"><div class="col-sm-6" id="current-time"></div><div class="col-sm-6" id="duration"></div></div> -->
               <!-- <textarea id="current-time"></textarea>
               <textarea id="duration"></textarea> -->
             </div>
           </div>
-        <input id="names" ng-model="name"> Hello {{ name }}
-        <button id="lock" class="glyphicon glyphicon-lock" onclick="lockname()"></button>
+        <input id="names" ng-model="name"> UserName :  {{ name }}
+        <!-- <button id="lock" class="glyphicon glyphicon-lock" onclick="lockname()"></button> -->
         <br/>
         <br/>
         <form action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
+            <input id="m" autocomplete="off" />&nbsp&nbsp<button>Send</button>
         </form>
     <br/>
 
@@ -71,9 +73,13 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
 <script>
-        
-        var i;
 
+var i;
+
+var socket = io();
+socket.on('i', function(msg){
+            i=msg;
+        });
 
 
     $(function () {
@@ -88,13 +94,20 @@
           $('#messages').append($('<li>').text(msg));
         });
         socket.on('i', function(msg){
+            if(i!=msg)
+                player.playVideoAt(msg);
             i=msg;
         });
         socket.on('next', function(msg){
-          player.playVideoAt(i);
+          player.playVideoAt(msg);
         });
-        socket.on('play', function(msg){
+        socket.on('seek', function(msg){
+          player.seekTo(msg);
+        });
 
+
+
+        socket.on('play', function(msg){
     $("#player").css("visibility", "visible");
           player.playVideo();
           player.seekTo(msg);
@@ -107,6 +120,15 @@
           player.seekTo(msg);
           
         });
+    socket.on('stop', function(msg){
+            i=msg;
+    player.playVideoAt(i);
+    player.stopVideo();
+    
+  });
+  socket.on('seek', function(msg){
+    player.seekTo(msg);
+  });
       });//in
     
         
@@ -120,7 +142,6 @@
     
         function play(){
             $("#player").css("visibility", "visible");
-            console.log(i);
             // socket.emit('i', i);
           socket.emit('play', player.getCurrentTime());
           player.playVideo();
@@ -143,8 +164,15 @@
         }
             console.log("pause senpai");
         }
+
+        function stopVideo() {
+            socket.emit('stop', i);
+        player.stopVideo();
+        console.log("stop senpai");
+        }
     
         function next(){
+
             i=i>=42?0:i+1;
             socket.emit('i', i);
             socket.emit('next',i)
@@ -157,12 +185,12 @@
         }
     
 
-function lockname(){
-    if($("#lock")==true){
-        name=$("#lock");
-    }
+// function lockname(){
+//     if($("#lock")==true){
+//         name=$("#lock");
+//     }
     
-}
+// }
 
         // 2. This code loads the IFrame Player API code asynchronously.
         var tag = document.createElement('script');
@@ -181,6 +209,7 @@ function lockname(){
             width: '100%',
 
             frameborder:'0',
+            shuffle:0,
             // listType: 'playlist',
             // list: '',
             // videoId: 'E_cTdhd88mk',
@@ -227,28 +256,26 @@ function lockname(){
             $("#player").css("visibility", "hidden");
             // player.seekTo();       
         time_update_interval = setInterval(function () {
-            // updateTimerDisplay();
+            updateTimerDisplay();
             updateProgressBar();
             // console.log(length);
         }, 1000)
         }//initiation of player
     
         var done = false;
-        function stopVideo() {
-        player.stopVideo();
-        }
+        
     
     
-        // function updateTimerDisplay(){
-    //     console.log("dodo");
-    //     // Update current time text display.
-    //     $('#current-time').text(formatTime( player.getCurrentTime() ));
-    //     $('#duration').text(formatTime( player.getDuration() ));
-    //     console.log(player.getCurrentTime());
-    // }
+        function updateTimerDisplay(){
+        // console.log("dodo");
+        // Update current time text display.
+        $('#current-time').text(formatTime( player.getCurrentTime() )+"/"+ formatTime( player.getDuration() ));
+        // $('#duration').text(formatTime( player.getDuration() ));
+        console.log(player.getCurrentTime());
+    }
     
     function formatTime(time){
-        console.log("time");
+        console.log(time);
         time = Math.round(time);
         var minutes = Math.floor(time / 60),
         seconds = time - minutes * 60;
@@ -260,12 +287,15 @@ function lockname(){
     
     
     function updateProgressBar(){
+        // $("#nowtime").val = formatTime(player.getCurrentTime());
+        // console.log("something"+$("#nowtime"));
       var percentage = ( player.getCurrentTime() / player.getDuration() ) * 100;
       $("#custom-seekbar span").css("width", percentage+"%");
       $("#indiv span").css("width", player.getVideoLoadedFraction()*100+"%");
     }
     
     $("#custom-seekbar").on("click", function(e){
+
         console.log(player.getCurrentTime());
         var offset = $(this).offset();
         var left = (e.pageX - offset.left);
@@ -274,6 +304,7 @@ function lockname(){
         var vidTime = player.getDuration() * percentage;
         console.log(vidTime);
         player.seekTo(vidTime);
+        socket.emit('seek',vidTime);
     
     });//click()
     
