@@ -15,7 +15,6 @@
     "googleapis": "^51.0.0",
     "http-errors": "~1.6.3",
     "jquery": "^3.5.1",
-    "mongoose": "^5.9.17",
     "morgan": "~1.9.1",
     "socket.io": "^2.3.0"
   },
