@@ -3,9 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var rateLimit = require('express-rate-limit');
+const { body, check } = require('express-validator')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+const Playlists = require('.//models/playlists'); 
 
 var app = express();
 
@@ -21,12 +24,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.get('/playlists', Playlists.readAll);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+//limiter
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5, // 5 requests,
+})
 
+app.use(limiter)
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -39,3 +49,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+

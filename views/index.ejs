@@ -54,13 +54,19 @@
         <!-- <button id="lock" class="glyphicon glyphicon-lock" onclick="lockname()"></button> -->
         <br/>
         <br/>
-        <form action="">
+        <form id="chat">
             <input id="m" autocomplete="off" />&nbsp&nbsp<button>Send</button>
         </form>
     <br/>
 
     <ul id="messages"></ul>
 
+
+    <form class="addBooks" action="/playlists" id="add" method="post">
+        <input id="listname" autocomplete="off" /><br/>
+        <input id="type" autocomplete="off" />&nbsp&nbsp
+        <input type="submit" value="submit">
+    </form>
         
 
     </div>
@@ -81,10 +87,20 @@ socket.on('i', function(msg){
             i=msg;
         });
 
+const addList = document.querySelector('.addBooks')
+addList.addEventListener('submit', (e) => {
+  e.preventDefault()
+  const List = addList.querySelector('#listname').value;
+  const listtype = addList.querySelector('#type').value;
+  post('/playlists', { List, listtype });
+  console.log(List,listtype);
+  
+  
+})
 
     $(function () {
         var socket = io();
-        $('form').submit(function(e){
+        $('#chat').submit(function(e){
           e.preventDefault(); // prevents page reloading
           socket.emit('chat message', $('#names').val()+ "   :  " +$('#m').val());
           $('#m').val('');

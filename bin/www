@@ -1,32 +1,12 @@
 #!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
-
 var app = require('../app');
 var debug = require('debug')('remote:server');
 var http = require('http');
-
-/**
- * Get port from environment and store in Express.
- */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
 var server = http.createServer(app);
 var io          = require('socket.io')(server);
 var ejs         = require('ejs');
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -92,10 +72,6 @@ io.on('connection', (socket) => {
     io.emit('stop',msg);
   });//next
 });
-
-/**
- * Normalize a port into a number, string, or false.
- */
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
