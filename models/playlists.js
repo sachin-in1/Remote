@@ -1,37 +1,39 @@
-const Sequelize = require('sequelize');
-const database = require('./database');
+const mongoose = require('mongoose');
+const unique = require('mongoose-unique-validator');
+const validate = require('mongoose-validator');
 
-const Playlists = database.define(
-  'playlists',
-  {
-    list: {
-      type: Sequelize.TEXT
-    },
-    listtype: {
-      type: Sequelize.TEXT
-    },
+const listValidator = [
+  validate({
+    validator: 'isLength',
+    arguments: [5, 30],
+    message: 'Name must not exceed {ARGS[1]} characters.'
+  })
+];
 
+const listtypeValidator = [
+  validate({
+    validator: 'isLength',
+    arguments: [0, 40],
+    message: 'Email must not exceed {ARGS[1]} characters.'
+  })
+];
+
+// Define the database model
+const UserSchema = new mongoose.Schema({
+  list: {
+    type: String,
+    required: [true, 'Playlist is required.'],
+    unique:true,
+    validate: listValidator
   },
-  { timestamps: false }
-);
-
-Playlists.readAll = async (req, res) => {
-  try {
-    const playlists = await Playlists.findAll();
-    return res.send({ playlists });
-  } catch (error) {
-    return res.send(error);
+  listtype: {
+    type: String,
+    required: [true, 'Type is required.'],
+    validate: listtypeValidator
   }
-};
-Playlists.addList = async (req, res) => {
-  try {
-    console.log("hooo");
-    
-    const playlists = await Playlists.create(req.body.list,req.body.listtype);
-    return res.send({ playlists });
-  } catch (error) {
-    return res.send(error);
-  }
-};
+});
 
-module.exports = Playlists;
+// Use the unique validator plugin
+PlaylistSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
+
+const Playlists = module.exports = mongoose.model('playlists', PlaylistSchema);
