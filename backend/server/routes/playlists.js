@@ -4,7 +4,7 @@ const router = express.Router();
 // const mongoose = require('mongoose');
 const Playlist = require('../database/models/playlists');
 
-const minutes = 5;
+// const minutes = 5;
 // const postLimiter = new RateLimit({
 //   windowMs: minutes * 60 * 1000, // milliseconds
 //   max: 100, // Limit each IP to 100 requests per windowMs 

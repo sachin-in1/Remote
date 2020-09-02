@@ -31,8 +31,8 @@ app.use(express.json())
 // Routes
 const user = require('./database/models/user')
 const playlist = require('./database/models/playlists')
-app.use('/users', user)
-app.use('/playlists', playlist)
+app.use('/user', user)
+app.use('/playlist', playlist)
 
 // Starting Server 
 app.listen(PORT, () => {

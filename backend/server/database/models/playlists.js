@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema
 const unique = require('mongoose-unique-validator');
 const validate = require('mongoose-validator');
+mongoose.promise = Promise
 
 const listValidator = [
   validate({
     validator: 'isLength',
-    arguments: [5, 30],
+    arguments: [2, 30],
     message: 'Name must not exceed {ARGS[1]} characters.'
   })
 ];
@@ -19,7 +21,7 @@ const listtypeValidator = [
 ];
 
 // Define the database model
-const PlaylistSchema = new mongoose.Schema({
+const PlaylistSchema = new Schema({
   list: {
     type: String,
     required: [true, 'Playlist is required.'],
@@ -36,5 +38,5 @@ const PlaylistSchema = new mongoose.Schema({
 
 // Use the unique validator plugin
 PlaylistSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
-
-const Playlists = module.exports = mongoose.model('playlists', PlaylistSchema);
+const Playlist = mongoose.model('playlists', PlaylistSchema);
+module.exports= Playlist;
