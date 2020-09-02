@@ -1,32 +1,36 @@
 {
-  "name": "mern-crud",
+  "name": "simple-mern-passport",
   "version": "0.1.0",
-  "description": "A simple records system using MongoDB, Express.js, React.js, and Node.js with real-time CRUD operations using Socket.io",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sachin-in1/Remote.git"
-  },
-  "keywords": [],
-  "author": "Ceferino Jose II",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sachin-in1/Remote/issues"
-  },
-  "homepage": "https://github.com/sachin-in1/Remote#readme",
+  "private": true,
   "dependencies": {
-    "body-parser": "1.19.0",
-    "cors": "2.8.5",
-    "express": "4.17.1",
-    "express-rate-limit": "5.1.3",
-    "mongoose": "5.9.13",
-    "mongoose-unique-validator": "2.0.3",
-    "mongoose-validator": "2.1.0",
-    "socket.io": "2.3.0",
-    "string-capitalize-name": "1.0.3"
-  }
+    "axios": "^0.20.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "connect-mongo": "^2.0.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.10.1",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.0",
+    "semantic-ui-react": "^1.2.1",
+    "spectre.css": "^0.5.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "api": "nodemon ./server/server.js",
+    "dev": "concurrently \"react-scripts start\" \"nodemon server/server.js\""
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.5"
+  },
+  "proxy": "http://localhost:8080"
 }
