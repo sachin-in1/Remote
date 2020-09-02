@@ -6,7 +6,7 @@ import Signup from './components/sign-up'
 import LoginForm from './components/login-form'
 import Navbar from './components/navbar'
 import Home from './components/home'
-import PlaylistView from './components/playlists';
+import PlaylistView from './components/playlist';
 
 class App extends Component {
   constructor() {
@@ -44,7 +44,7 @@ class App extends Component {
       console.log('Get user response: ')
       console.log(response.data)
       if (response.data.user) {
-        console.log('Get User: There is a user saved in the server session: ')
+        console.log('Get User: There is user saved in the server session: ')
 
         this.setState({
           loggedIn: true,
@@ -60,7 +60,7 @@ class App extends Component {
     })
   }
   fetchPlaylists() {
-    axios.get('/playlists/')
+    axios.get('/playlist/')
     .then((response) => {
       this.setState({ playlists: response.data });
     })
@@ -94,7 +94,7 @@ class App extends Component {
             />}
         />
         <Route
-        path="/playlists"
+        path="/playlist"
         render={() =>
           <PlaylistView
           playlists={this.state.playlists}

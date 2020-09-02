@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-// import TablePlaylist from './TablePlaylist/TablePlaylist'
+import TablePlaylist from './TablePlaylist/TablePlaylist'
 import axios from 'axios'
-// import { Container } from 'semantic-ui-react';
-// import ModalPlaylist from './ModalPlaylist/ModalPlaylist'
+import { Container } from 'semantic-ui-react';
+import ModalPlaylist from './ModalPlaylist/ModalPlaylist'
 class Home extends Component {
     constructor() {
         super();
@@ -16,7 +16,7 @@ class Home extends Component {
         this.fetchPlaylists();
     }
     fetchPlaylists() {
-        axios.get('/playlists/')
+        axios.get('/playlist/')
         .then((response) => {
           this.setState({ playlists: response.data });
         })

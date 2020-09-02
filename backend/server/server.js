@@ -7,7 +7,7 @@ const MongoStore = require('connect-mongo')(session)
 const passport = require('./passport');
 
 const app = express()
-const PORT = process.env.PORT || 8888
+const PORT = process.env.PORT || 9000
 // Route requires
 // MIDDLEWARE
 app.use(cors())
@@ -32,8 +32,10 @@ app.use(passport.session()) // calls the deserializeUser
 // Routes
 const user = require('./routes/user')
 const playlist = require('./routes/playlists')
+const room = require('./routes/room')
 app.use('/user', user)
 app.use('/playlist', playlist)
+app.use('/room', room)
 
 // Starting Server 
 app.listen(PORT, () => {
