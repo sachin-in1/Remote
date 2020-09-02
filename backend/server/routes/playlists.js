@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
-// const RateLimit = require('express-rate-limit');
-// const mongoose = require('mongoose');
+const RateLimit = require('express-rate-limit');
+const mongoose = require('mongoose');
 const Playlist = require('../database/models/playlists');
 
-// const minutes = 5;
-// const postLimiter = new RateLimit({
-//   windowMs: minutes * 60 * 1000, // milliseconds
-//   max: 100, // Limit each IP to 100 requests per windowMs 
-//   delayMs: 0, // Disable delaying - full speed until the max limit is reached 
-//   handler: (req, res) => {
-//     res.status(429).json({ success: false, msg: `You made too many requests. Please try again after ${minutes} minutes.` });
-//   }
-// });
+const minutes = 5;
+const postLimiter = new RateLimit({
+  windowMs: minutes * 60 * 1000, // milliseconds
+  max: 100, // Limit each IP to 100 requests per windowMs 
+  delayMs: 0, // Disable delaying - full speed until the max limit is reached 
+  handler: (req, res) => {
+    res.status(429).json({ success: false, msg: `You made too many requests. Please try again after ${minutes} minutes.` });
+  }
+});
 
 router.route('/').get((req, res) => {
   Playlist.find({})
@@ -36,10 +36,10 @@ router.get('/:list', (req, res) => {
 
 
   router.route('/').post(postLimiter, (req, res) => {
-    console.log("hii");
+    console.log(req.body);
     let newPlaylist = new Playlist({
-      list: sanitizeName(req.body.list),
-      listtype: sanitizeEmail(req.body.listtype),
+      list: sanitizeList(req.body.list),
+      listtype: sanitizeListtype(req.body.listtype),
     });
   
     newPlaylist.save()
@@ -74,8 +74,8 @@ router.get('/:list', (req, res) => {
   router.put('/:id', (req, res) => {
   
     let updatedPlaylist = {
-      list: sanitizeName(req.body.list),
-      listtype: sanitizeEmail(req.body.listtype)
+      list: sanitizeList(req.body.list),
+      listtype: sanitizeListtype(req.body.listtype)
     };
   
     Playlist.findOneAndUpdate({ _id: req.params.id }, updatedPlaylist, { runValidators: true, context: 'query' })
@@ -137,20 +137,10 @@ router.get('/:list', (req, res) => {
   
   // Minor sanitizing to be invoked before reaching the database
   sanitizeList = (list) => {
+    console.log("list");
     return list.toLowerCase();
   }
-  sanitizeEmail = (listtype) => {
-    return listtype.toLowerCase();
+  sanitizeListtype = (listtype) => {
+    // listtype = listtype.toLowerCase();
+    return (listtype === 'playlist' || listtype === 'account') ? listtype : '';
   }
-//   sanitizeAge = (age) => {
-//     // Return empty if age is non-numeric
-//     if (isNaN(age) && age != '') return '';
-//     return (age === '') ? age : parseInt(age);
-//   }
-//   sanitizeGender = (gender) => {
-//     // Return empty if it's neither of the two
-//     return (gender === 'm' || gender === 'f') ? gender : '';
-//   }
-  
-/* GET home page. */
-// router.get('/', playlist.getPlaylists());

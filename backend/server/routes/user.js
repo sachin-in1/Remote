@@ -1,11 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../database/models/user')
-// const passport = require('../passport')
+const passport = require('../passport')
 
 router.post('/', (req, res) => {
     console.log('user signup');
-
     const { username, password } = req.body
     // ADD VALIDATION
     User.findOne({ username: username }, (err, user) => {
@@ -36,14 +35,14 @@ router.post(
         console.log(req.body)
         next()
     },
-    // passport.authenticate('local'),
-    // (req, res) => {
-    //     console.log('logged in', req.user);
-    //     var userInfo = {
-    //         username: req.user.username
-    //     };
-    //     res.send(userInfo);
-    // }
+    passport.authenticate('local'),
+    (req, res) => {
+        console.log('logged in', req.user);
+        var userInfo = {
+            username: req.user.username
+        };
+        res.send(userInfo);
+    }
 )
 
 router.get('/', (req, res, next) => {
