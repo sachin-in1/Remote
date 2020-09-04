@@ -7,7 +7,7 @@ const MongoStore = require('connect-mongo')(session)
 const passport = require('./passport');
 
 const app = express()
-const PORT = process.env.PORT || 9000
+const PORT = process.env.PORT || 8000
 // Route requires
 // MIDDLEWARE
 app.use(cors())

@@ -7,7 +7,7 @@ import LoginForm from './components/login-form'
 import Navbar from './components/navbar'
 import Home from './components/home'
 import PlaylistView from './components/playlist';
-
+import Play from './components/play'
 class App extends Component {
   constructor() {
     super()
@@ -15,29 +15,30 @@ class App extends Component {
       loggedIn: false,
       username: null,
 
-      playlists:[]
+      // playlists:[]
     }
 
     this.getUser = this.getUser.bind(this)
     this.componentDidMount = this.componentDidMount.bind(this)
     this.updateUser = this.updateUser.bind(this)
-    this.updatePlaylists = this.updatePlaylists.bind(this)
+    // this.updatePlaylists = this.updatePlaylists.bind(this)
 
-    this.fetchPlaylists = this.fetchPlaylists.bind(this);
-    this.handlePlaylistAdded = this.handlePlaylistAdded.bind(this);
+    // this.fetchPlaylists = this.fetchPlaylists.bind(this);
+    // this.handlePlaylistAdded = this.handlePlaylistAdded.bind(this);
   }
 
   componentDidMount() {
     this.getUser();
-    this.fetchPlaylists();
+    // this.fetchPlaylists('');
   }
 
   updateUser (userObject) {
     this.setState(userObject)
+    console.log(userObject.username);
   }
-  updatePlaylists (playlistObject) {
-    this.setState(playlistObject)
-  }
+  // updatePlaylists (playlistObject) {
+  //   this.setState(playlistObject)
+  // }
 
   getUser() {
     axios.get('/user/').then(response => {
@@ -59,20 +60,7 @@ class App extends Component {
       }
     })
   }
-  fetchPlaylists() {
-    axios.get('/playlist/')
-    .then((response) => {
-      this.setState({ playlists: response.data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-  handlePlaylistAdded(playlist) {
-    let playlists = this.state.playlists.slice();
-    playlists.push(playlist);
-    this.setState({ playlists: playlists });
-  }
+
   render() {
     return (
       <div className="App">
@@ -97,14 +85,19 @@ class App extends Component {
         path="/playlist"
         render={() =>
           <PlaylistView
-          playlists={this.state.playlists}
-            updatePlaylists={this.updatePlaylists}
+          // playlists={this.state.playlists}
+          //   updatePlaylists={this.updatePlaylists}
           />}
       />
         <Route
           path="/signup"
           render={() =>
             <Signup/>}
+        />
+        <Route
+          path="/play"
+          render={() =>
+            <Play/>}
         />
 
       </div>
