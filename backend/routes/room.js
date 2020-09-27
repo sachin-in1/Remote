@@ -20,7 +20,10 @@ router.post('/', (req, res) => {
             const newRoom = new Room({
                 username: username,
                 name:name,
-                users: [username]
+                users: [username],
+                active:'',
+                playlists:[''],
+                currenttime: '0',
             })
             newRoom.save((err, savedRoom) => {
                 if (err) return res.json(err)

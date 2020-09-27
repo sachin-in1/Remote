@@ -142,5 +142,5 @@ router.get('/:list', (req, res) => {
   }
   sanitizeListtype = (listtype) => {
     // listtype = listtype.toLowerCase();
-    return (listtype === 'playlist' || listtype === 'account') ? listtype : '';
+    return (listtype === 'playlist' || listtype === 'user_uploads') ? listtype : '';
   }

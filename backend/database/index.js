@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise
 //27017 is the default mongoDB port
 const uri = 'mongodb://localhost:27017/remote' 
 
-mongoose.connect(uri,{ useNewUrlParser: true ,useCreateIndex:true,useUnifiedTopology:true}).then(
+mongoose.connect(uri).then(
     () => { 
         /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ 
         console.log('Connected to Mongo');

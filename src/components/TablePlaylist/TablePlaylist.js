@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
 
-// import ModalPlaylist from '../ModalPlaylist/ModalPlaylist'
+import ModalPlaylist from '../ModalPlaylist/ModalPlaylist'
 // import ModalConfirmDelete from '../ModalConfirmDelete/ModalConfirmDelete';
 
 class TablePlaylist extends Component {
@@ -14,8 +14,6 @@ class TablePlaylist extends Component {
       <Table.Row key={playlist._id}>
         <Table.Cell>{playlist.list}</Table.Cell>
         <Table.Cell>{playlist.listtype}</Table.Cell>
-        {/* <Table.Cell>{playlist.age}</Table.Cell>
-        <Table.Cell>{playlist.gender}</Table.Cell> */}
         {/* <Table.Cell>
           <ModalPlaylist
             headerTitle='Edit Playlist'
@@ -49,9 +47,7 @@ class TablePlaylist extends Component {
           <Table.Row>
             <Table.HeaderCell>List</Table.HeaderCell>
             <Table.HeaderCell>List Type</Table.HeaderCell>
-            {/* <Table.HeaderCell>Age</Table.HeaderCell>
-            <Table.HeaderCell>Gender</Table.HeaderCell>
-            <Table.HeaderCell>Actions</Table.HeaderCell> */}
+            {/* <Table.HeaderCell>Actions</Table.HeaderCell>  */}
           </Table.Row>
         </Table.Header>
         <Table.Body>

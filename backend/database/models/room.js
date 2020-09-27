@@ -20,6 +20,28 @@ const roomSchema = new Schema({
 		type: [String], 
 		unique: false,
 		required: false },
+	playlists:{
+		type: [String],
+		unique: false,
+		required: true 
+	},
+	activelist: {
+		type: String,
+		// default:'',
+		unique: false,
+		required: true 
+	},
+	currenttime: {
+		type: String,
+		unique: false,
+		required: true 
+	},
+	currentindex:{
+		type: Number,
+		default:0,
+		unique:false,
+		required: true
+	}
 
 },{
 	timestamps:true,

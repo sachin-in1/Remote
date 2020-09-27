@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const listTypeOptions = [
   { key: 'playlist', text: 'Playlist', value: 'playlist' },
-  { key: 'account', text: 'Account', value: 'account' },
+  { key: 'account', text: 'User Uploads', value: 'user_uploads' },
   // { key: 'o', text: 'Do Not Disclose', value: 'o' }
 ]
 
@@ -16,8 +16,6 @@ class FormPlaylist extends Component {
     this.state = {
       list: '',
       listtype: '',
-      // age: '',
-      // gender: '',
       formClassName: '',
       formSuccessMessage: '',
       formErrorMessage: ''
@@ -36,8 +34,6 @@ class FormPlaylist extends Component {
         this.setState({
           list: response.data.list,
           listtype: response.data.listtype,
-          // age: (response.data.age === null) ? '' : response.data.age,
-          // gender: response.data.gender,
         });
       })
       .catch((err) => {
@@ -48,13 +44,13 @@ class FormPlaylist extends Component {
 
   handleInputChange(e) {
     const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    this.setState({list: target.value});
     const list = target.list;
-
-    this.setState({ [list]: value });
+    console.log(list);
   }
 
   handleSelectChange(e, data) {
+    console.log(data.value);
     this.setState({ listtype: data.value });
   }
 
@@ -64,10 +60,9 @@ class FormPlaylist extends Component {
 
     const playlist = {
       list: this.state.list,
-      listtype: this.state.listtype,
-      // age: this.state.age,
-      // gender: this.state.gender
+      listtype: this.state.listtype
     }
+    this.props.onPlaylistAdded(playlist);
 
     // Acknowledge that if the user id is provided, we're updating via PUT
     // Otherwise, we're creating a new data via POST
@@ -80,7 +75,7 @@ class FormPlaylist extends Component {
     axios({
       method: method,
       responseType: 'json',
-      url: `/playlists/${params}`,
+      url: `/playlist/${params}`,
       data: playlist
     })
     .then((response) => {
@@ -89,19 +84,16 @@ class FormPlaylist extends Component {
         formSuccessMessage: response.data.msg
       });
 
-      if (!this.props.playlistID) {
-        this.setState({
-          list: '',
-          listtype: '',
-          // age: '',
-          // gender: ''
-        });
-        this.props.onPlaylistAdded(response.data.result);
-        // this.props.socket.emit('add', response.data.result);
-      }
+      // if (!this.props.playlistID) {
+      //   this.setState({
+      //     list: '',
+      //     listtype: ''
+      //   });
+      //   // this.props.socket.emit('add', response.data.result);
+      // }
       // else {
       //   this.props.onPlaylistUpdated(response.data.result);
-      //   this.props.socket.emit('update', response.data.result);
+      //   // this.props.socket.emit('update', response.data.result);
       // }
       
     })
@@ -141,27 +133,7 @@ class FormPlaylist extends Component {
           value={this.state.list}
           onChange={this.handleInputChange}
         />
-        {/* <Form.Input
-          label='Email'
-          type='email'
-          placeholder='elonmusk@tesla.com'
-          name='email'
-          maxLength='40'
-          required
-          value={this.state.email}
-          onChange={this.handleInputChange}
-        /> */}
         <Form.Group widths='equal'>
-          {/* <Form.Input
-            label='Age'
-            type='number'
-            placeholder='18'
-            min={5}
-            max={130}
-            name='age'
-            value={this.state.age}
-            onChange={this.handleInputChange}
-          /> */}
           <Form.Field
             control={Select}
             label='List type'

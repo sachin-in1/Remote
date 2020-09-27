@@ -7,7 +7,7 @@ mongoose.promise = Promise
 const listValidator = [
   validate({
     validator: 'isLength',
-    arguments: [2, 30],
+    arguments: [2, 50],
     message: 'Name must not exceed {ARGS[1]} characters.'
   })
 ];
@@ -15,7 +15,7 @@ const listValidator = [
 const listtypeValidator = [
   validate({
     validator: 'isLength',
-    arguments: [0, 40],
+    arguments: [0, 20],
     message: 'Email must not exceed {ARGS[1]} characters.'
   })
 ];

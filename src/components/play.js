@@ -66,7 +66,7 @@ class Play extends Component {
                 className='player'                // defaults -> null
                 containerClassName='jumbotron'       // defaults -> ''
                 opts={opts}                        // defaults -> {}
-                // onReady={}                    // defaults -> noop
+                onReady={this._onReady}                    // defaults -> noop
                 // onPlay={}                     // defaults -> noop
                 // onPause={func}                    // defaults -> noop
                 // onEnd={}                      // defaults -> noop

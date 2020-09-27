@@ -21,11 +21,10 @@ class Signup extends Component {
 	handleSubmit(event) {
 		console.log('sign-up handleSubmit, username: ')
 		console.log(this.state.username)
-		console.log(this.state.password)
 		event.preventDefault()
 
 		//request to server to add a new username/password
-		axios.post('http://localhost:8000/user/', {
+		axios.post('/user/', {
 			username: this.state.username,
 			password: this.state.password
 		})
